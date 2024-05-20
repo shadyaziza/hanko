@@ -14,6 +14,7 @@ type PasscodeInitRequest struct {
 
 type PasscodeReturn struct {
 	Id        string    `json:"id"`
+	Code      string    `json:"code"`
 	TTL       int       `json:"ttl"`
 	CreatedAt time.Time `json:"created_at"`
 }

@@ -3,13 +3,17 @@ package handler
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/gobuffalo/pop/v6"
 	"github.com/gofrs/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	zeroLogger "github.com/rs/zerolog/log"
 	"github.com/sethvargo/go-limiter"
-	"github.com/teamhanko/hanko/backend/audit_log"
+	auditlog "github.com/teamhanko/hanko/backend/audit_log"
 	"github.com/teamhanko/hanko/backend/config"
 	"github.com/teamhanko/hanko/backend/crypto"
 	"github.com/teamhanko/hanko/backend/dto"
@@ -23,9 +27,6 @@ import (
 	"github.com/teamhanko/hanko/backend/webhooks/utils"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/gomail.v2"
-	"net/http"
-	"strings"
-	"time"
 )
 
 type PasscodeHandler struct {
@@ -247,6 +248,7 @@ func (h *PasscodeHandler) Init(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.PasscodeReturn{
 		Id:        passcodeId.String(),
+		Code:      passcode,
 		TTL:       h.TTL,
 		CreatedAt: passcodeModel.CreatedAt,
 	})
